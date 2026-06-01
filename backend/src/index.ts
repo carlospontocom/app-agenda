@@ -32,7 +32,7 @@ const swaggerDefinition = {
   },
   servers: [
     { url: `http://localhost:${PORT}`, description: 'Servidor de desenvolvimento' },
-    { url: 'https://agenda-api.onrender.com', description: 'Produção (Render)' }
+    { url: 'https://app-agenda-9ov0.onrender.com', description: 'Produção (Render)' }
   ],
   components: {
     securitySchemes: {

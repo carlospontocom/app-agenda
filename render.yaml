@@ -33,4 +33,4 @@ services:
     staticPublishPath: agenda-bancaria/dist
     envVars:
       - key: VITE_API_URL
-        value: https://agenda-api.onrender.com/api
+        value: https://app-agenda-9ov0.onrender.com/api

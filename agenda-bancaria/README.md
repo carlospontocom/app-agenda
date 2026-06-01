@@ -100,7 +100,7 @@ npm run dev            # API em :3000
 | Serviço | Plataforma | Link |
 |---------|-----------|------|
 | Frontend | Vercel | https://agenda-bancaria.vercel.app |
-| Backend  | Render  | https://agenda-api.onrender.com |
+| Backend  | Render  | https://app-agenda-9ov0.onrender.com |
 
 ```bash
 # Frontend

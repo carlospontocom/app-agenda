@@ -49,7 +49,7 @@ http://localhost:3000/api/docs
 Produção:
 
 ```
-https://agenda-api.onrender.com/api/docs
+https://app-agenda-9ov0.onrender.com/api/docs
 ```
 
 ## Endpoints
