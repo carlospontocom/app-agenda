@@ -1,0 +1,33 @@
+@use 'variaveis' as *;
+
+.notificacao {
+  padding: 1.25rem 2.5rem 1.25rem 1.5rem;
+  border-radius: $raio-borda;
+  font-size: $tamanho-normal;
+  margin-bottom: $espaco-4;
+  @include borda-arredondada;
+
+  &.perigo {
+    background: clarear($cor-perigo, 30%);
+    color: escurecer($cor-perigo, 20%);
+    border: 1px solid $cor-perigo;
+  }
+
+  &.sucesso {
+    background: clarear($cor-sucesso, 30%);
+    color: escurecer($cor-sucesso, 20%);
+    border: 1px solid $cor-sucesso;
+  }
+
+  &.aviso {
+    background: clarear($cor-aviso, 15%);
+    color: escurecer($cor-aviso, 30%);
+    border: 1px solid $cor-aviso;
+  }
+
+  &.informativo {
+    background: clarear($cor-informativo, 30%);
+    color: escurecer($cor-informativo, 20%);
+    border: 1px solid $cor-informativo;
+  }
+}

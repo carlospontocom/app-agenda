@@ -1,0 +1,25 @@
+@use 'variaveis' as *;
+
+.cartao {
+  background: $cor-branca;
+  border-radius: $raio-borda;
+  padding: 1.25rem;
+  margin: 5px;
+  @include sombra(pequena);
+  @include borda-arredondada;
+
+  & + .cartao {
+    margin-top: 5px;
+  }
+
+  .cartao-titulo {
+    font-size: $tamanho-titulo-5;
+    font-weight: 600;
+    color: $cor-escura;
+    margin-bottom: $espaco-4;
+  }
+
+  .cartao-conteudo {
+    color: $cor-texto;
+  }
+}

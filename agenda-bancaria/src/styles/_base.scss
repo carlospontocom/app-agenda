@@ -1,0 +1,29 @@
+@use 'variaveis' as *;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $fonte-padrao;
+  color: $cor-texto;
+  font-size: $tamanho-normal;
+  line-height: 1.5;
+  background: $cor-fundo-pagina;
+}
+
+a {
+  color: $cor-primaria;
+  text-decoration: none;
+
+  &:hover {
+    color: escurecer($cor-primaria, 10%);
+  }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}

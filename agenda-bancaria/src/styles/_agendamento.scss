@@ -1,0 +1,66 @@
+@use 'variaveis' as *;
+
+.agendamento-item {
+  display: flex;
+  align-items: center;
+  padding: $espaco-4;
+  background: $cor-branca;
+  border: $borda-padrao;
+  border-radius: $raio-borda;
+  margin-bottom: $espaco-3;
+  @include borda-arredondada;
+  @include transicao;
+
+  &:hover {
+    @include sombra(pequena);
+  }
+
+  .status {
+    flex: 0 0 auto;
+    margin-right: $espaco-3;
+  }
+
+  .servico {
+    flex: 3;
+    font-weight: 600;
+  }
+
+  .agencia {
+    flex: 2;
+    color: $cor-cinza;
+  }
+
+  .data {
+    flex: 2;
+    color: $cor-cinza;
+  }
+
+  .hora {
+    flex: 1;
+    color: $cor-cinza;
+  }
+
+  .acoes {
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+}
+
+.filtros {
+  background: $cor-branca;
+  border-radius: $raio-borda;
+  padding: 1.25rem;
+  margin-bottom: $espaco-4;
+  @include sombra(pequena);
+  @include borda-arredondada;
+
+  .grade-filtros {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: $espaco-4;
+
+    @include ate-tablet {
+      grid-template-columns: 1fr;
+    }
+  }
+}

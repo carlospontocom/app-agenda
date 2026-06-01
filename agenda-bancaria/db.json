@@ -1,0 +1,509 @@
+{
+  "users": [
+    {
+      "nome": "SHERK",
+      "genero": "Masculino",
+      "data_nascimento": "1987-07-04",
+      "docPessoal": "010",
+      "email": "intablete@gmail.com",
+      "senha": "timtim",
+      "cep": "62010370",
+      "logradouro": "Rua Oriano Mendes",
+      "bairro": "Centro",
+      "cidade": "Sobral",
+      "uf": "CE",
+      "complemento": "centro",
+      "numero": "20",
+      "createdAt": "2026-06-01T12:29:34.832Z",
+      "id": 1,
+      "ativo": true,
+      "telefone": "88888888888",
+      "admin": false
+    },
+    {
+      "nome": "carlos nascimento",
+      "genero": "Masculino",
+      "data_nascimento": "1987-07-04",
+      "docPessoal": "020",
+      "email": "intablete2@gmail.com",
+      "senha": "timtim",
+      "cep": "62010370",
+      "logradouro": "Rua Oriano Mendes",
+      "bairro": "Centro",
+      "cidade": "Sobral",
+      "uf": "CE",
+      "complemento": "rua do norte",
+      "numero": "12",
+      "createdAt": "2026-06-01T13:14:53.340Z",
+      "id": 2,
+      "ativo": true
+    },
+    {
+      "nome": "jose maria das dores",
+      "genero": "Masculino",
+      "data_nascimento": "1987-07-04",
+      "docPessoal": "030",
+      "email": "intablete3@gmail.com",
+      "senha": "timtim",
+      "cep": "62010370",
+      "logradouro": "Rua Oriano Mendes",
+      "bairro": "Centro",
+      "cidade": "Sobral",
+      "uf": "CE",
+      "complemento": "",
+      "numero": "10",
+      "createdAt": "2026-06-01T13:33:17.789Z",
+      "id": 3,
+      "ativo": true
+    },
+    {
+      "nome": "SILVANA MEIRE",
+      "genero": "Feminino",
+      "data_nascimento": "19887-07-04",
+      "docPessoal": "040",
+      "email": "intablete4@gmail.com",
+      "senha": "timtim",
+      "cep": "62010370",
+      "logradouro": "Rua Oriano Mendes",
+      "bairro": "Centro",
+      "cidade": "Sobral",
+      "uf": "CE",
+      "complemento": "",
+      "numero": "sn",
+      "createdAt": "2026-06-01T13:39:32.950Z",
+      "id": 4,
+      "ativo": true
+    },
+    {
+      "nome": "TAMILA LOPES",
+      "genero": "Feminino",
+      "data_nascimento": "1995-02-18",
+      "docPessoal": "050",
+      "email": "tamilalopes@gmail.com",
+      "senha": "timtim",
+      "cep": "72910007",
+      "logradouro": "Quadra 41 Conjunto B",
+      "bairro": "Parque da Barragem Setor 08",
+      "cidade": "Águas Lindas de Goiás",
+      "uf": "GO",
+      "complemento": "",
+      "numero": "5",
+      "createdAt": "2026-06-01T13:55:03.471Z",
+      "id": 5,
+      "ativo": false
+    },
+    {
+      "nome": "juliana maria",
+      "genero": "Feminino",
+      "data_nascimento": "1987-07-04",
+      "telefone": "88999999999999999",
+      "docPessoal": "060",
+      "email": "intablete6@gmail.com",
+      "senha": "timtim",
+      "cep": "62010370",
+      "logradouro": "Rua Oriano Mendes",
+      "bairro": "Centro",
+      "cidade": "Sobral",
+      "uf": "CE",
+      "complemento": "",
+      "numero": "sn",
+      "createdAt": "2026-06-01T14:23:02.687Z",
+      "id": 6,
+      "ativo": false
+    },
+    {
+      "nome": "ANTONIO CARLOS PEREIRA DO NASCIMENTO",
+      "genero": "Masculino",
+      "data_nascimento": "1987-07-04",
+      "telefone": "88999999999",
+      "docPessoal": "01718766360",
+      "email": "intablete87@gmail.com",
+      "senha": "timtim",
+      "cep": "62010370",
+      "logradouro": "Rua Oriano Mendes",
+      "bairro": "Centro",
+      "cidade": "Sobral",
+      "uf": "CE",
+      "complemento": "",
+      "numero": "2",
+      "createdAt": "2026-06-01T17:28:14.529Z",
+      "ativo": true,
+      "id": 7
+    },
+    {
+      "nome": "JOANA DARK",
+      "genero": "Feminino",
+      "data_nascimento": "1987-07-04",
+      "telefone": "01111111111",
+      "docPessoal": "070",
+      "email": "intablete7@gmail.com",
+      "senha": "timtim",
+      "cep": "72010900",
+      "logradouro": "Praça do Relógio Lote A",
+      "bairro": "Taguatinga Centro",
+      "cidade": "Brasília",
+      "uf": "DF",
+      "complemento": "centro da cidade, prx as americanas",
+      "numero": "sn",
+      "createdAt": "2026-06-01T17:35:59.224Z",
+      "ativo": true,
+      "id": 8
+    },
+    {
+      "nome": "JUBILEIA",
+      "genero": "Feminino",
+      "data_nascimento": "1987-07-04",
+      "telefone": "88999999999",
+      "docPessoal": "080",
+      "email": "intablete8@gmail.com",
+      "senha": "timtim",
+      "cep": "62010050",
+      "logradouro": "Rua Coronel Sabino Guimarães",
+      "bairro": "Centro",
+      "cidade": "Sobral",
+      "uf": "CE",
+      "complemento": "",
+      "numero": "00",
+      "createdAt": "2026-06-01T17:39:53.337Z",
+      "ativo": true,
+      "id": 9
+    },
+    {
+      "nome": "LINHARES DA SILVA",
+      "genero": "Masculino",
+      "data_nascimento": "1987-07-04",
+      "telefone": "11111111111",
+      "docPessoal": "090",
+      "email": "intablete9@gmail.com",
+      "senha": "timtim",
+      "cep": "71200100",
+      "logradouro": "Trecho SIA Trecho 10",
+      "bairro": "Zona Industrial (Guará)",
+      "cidade": "Brasília",
+      "uf": "DF",
+      "complemento": "",
+      "numero": "SN",
+      "createdAt": "2026-06-01T17:43:11.382Z",
+      "ativo": true,
+      "id": 10
+    },
+    {
+      "nome": "TOBIAS SOUZA",
+      "genero": "Masculino",
+      "data_nascimento": "1987-07-04",
+      "telefone": "11888888888",
+      "docPessoal": "0100",
+      "email": "intablete10@gmail.com",
+      "senha": "timtim",
+      "cep": "71900100",
+      "logradouro": "Avenida das Castanheiras",
+      "bairro": "Norte (Águas Claras)",
+      "cidade": "Brasília",
+      "uf": "DF",
+      "complemento": "",
+      "numero": "SN",
+      "createdAt": "2026-06-01T17:45:48.769Z",
+      "ativo": true,
+      "id": 11
+    },
+    {
+      "nome": "JUDITE NASCIMENTO",
+      "genero": "Feminino",
+      "data_nascimento": "1987-07-04",
+      "telefone": "88888888888",
+      "docPessoal": "017",
+      "email": "intablete17@gmail.com",
+      "senha": "timtim",
+      "cep": "62010150",
+      "logradouro": "Rua Coronel Diogo Gomes",
+      "bairro": "Centro",
+      "cidade": "Sobral",
+      "uf": "CE",
+      "complemento": "PROX AO MERCADO",
+      "numero": "SN",
+      "createdAt": "2026-06-01T18:06:07.726Z",
+      "ativo": true,
+      "id": 12
+    },
+    {
+      "nome": "ANTONIO CARLOS PEREIRA DO NASCIMENTO",
+      "genero": "Masculino",
+      "data_nascimento": "1987-07-04",
+      "telefone": "88997838872",
+      "docPessoal": "123",
+      "email": "carlosnascimento@banco.com",
+      "senha": "timtim",
+      "cep": "62010110",
+      "logradouro": "Rua Ernesto Marinho",
+      "bairro": "Centro",
+      "cidade": "Sobral",
+      "uf": "CE",
+      "complemento": "",
+      "numero": "SN",
+      "createdAt": "2026-06-01T19:35:19.336Z",
+      "ativo": true,
+      "id": 13
+    }
+  ],
+  "appointments": [
+    {
+      "userId": 1,
+      "userName": "CARLOS NASCIMENTO",
+      "userDoc": "010",
+      "servicos": [
+        "Renegociar Dívidas",
+        "Abrir nova conta"
+      ],
+      "agencia": "Agência Central",
+      "data": "2027-02-10",
+      "hora": "14:00",
+      "status": "completed",
+      "createdAt": "2026-06-01T12:54:03.466Z",
+      "id": 7
+    },
+    {
+      "userId": 2,
+      "userName": "carlos nascimento",
+      "userDoc": "020",
+      "servicos": [
+        "Abrir nova conta",
+        "Saque Volumoso"
+      ],
+      "agencia": "Agência Norte",
+      "data": "2027-02-10",
+      "hora": "09:00",
+      "status": "completed",
+      "createdAt": "2026-06-01T13:15:24.923Z",
+      "id": 8
+    },
+    {
+      "userId": 1,
+      "userName": "CARLOS NASCIMENTO",
+      "userDoc": "010",
+      "servicos": [
+        "Configurar app"
+      ],
+      "agencia": "Agência Leste",
+      "data": "2027-02-10",
+      "hora": "14:00",
+      "status": "completed",
+      "createdAt": "2026-06-01T13:31:27.944Z",
+      "id": 9
+    },
+    {
+      "userId": 3,
+      "userName": "jose maria das dores",
+      "userDoc": "030",
+      "servicos": [
+        "Abrir nova conta",
+        "Saque Volumoso"
+      ],
+      "agencia": "Agência Oeste",
+      "data": "2027-02-10",
+      "hora": "13:20",
+      "status": "completed",
+      "createdAt": "2026-06-01T13:33:49.775Z",
+      "id": 10
+    },
+    {
+      "userId": 5,
+      "userName": "TAMILA LOPES",
+      "userDoc": "050",
+      "servicos": [
+        "Abrir nova conta",
+        "Configurar app"
+      ],
+      "agencia": "Agência Norte",
+      "data": "2026-06-02",
+      "hora": "12h40",
+      "status": "completed",
+      "createdAt": "2026-06-01T13:55:35.622Z",
+      "id": 11
+    },
+    {
+      "userId": 1,
+      "userName": "CARLOS NASCIMENTO",
+      "userDoc": "010",
+      "servicos": [
+        "Abrir nova conta"
+      ],
+      "agencia": "Agência Central",
+      "data": "2026-06-01",
+      "hora": "13h20",
+      "status": "completed",
+      "createdAt": "2026-06-01T14:12:46.553Z",
+      "id": 12
+    },
+    {
+      "userId": 6,
+      "userName": "juliana maria",
+      "userDoc": "060",
+      "servicos": [
+        "Abrir nova conta",
+        "Configurar app"
+      ],
+      "agencia": "Agência Norte",
+      "data": "2026-06-05",
+      "hora": "13h40",
+      "status": "completed",
+      "createdAt": "2026-06-01T14:24:53.569Z",
+      "id": 13
+    },
+    {
+      "userId": 8,
+      "userName": "JOANA DARK",
+      "userDoc": "070",
+      "servicos": [
+        "Renegociar Dívidas"
+      ],
+      "agencia": "Agência Central",
+      "data": "2026-06-02",
+      "hora": "09h00",
+      "status": "completed",
+      "createdAt": "2026-06-01T17:38:08.441Z",
+      "id": 14
+    },
+    {
+      "userId": 9,
+      "userName": "JUBILEIA",
+      "userDoc": "080",
+      "servicos": [
+        "Abrir nova conta"
+      ],
+      "agencia": "Agência Central",
+      "data": "2026-06-02",
+      "hora": "09h20",
+      "status": "completed",
+      "createdAt": "2026-06-01T17:41:55.503Z",
+      "id": 15
+    },
+    {
+      "userId": 10,
+      "userName": "LINHARES DA SILVA",
+      "userDoc": "090",
+      "servicos": [
+        "Abrir nova conta"
+      ],
+      "agencia": "Agência Central",
+      "data": "2026-06-02",
+      "hora": "09h40",
+      "status": "completed",
+      "createdAt": "2026-06-01T17:43:38.393Z",
+      "id": 16
+    },
+    {
+      "userId": 11,
+      "userName": "TOBIAS SOUZA",
+      "userDoc": "0100",
+      "servicos": [
+        "Abrir nova conta",
+        "Configurar app"
+      ],
+      "agencia": "Agência Central",
+      "data": "2026-06-02",
+      "hora": "13h20",
+      "status": "cancelled",
+      "createdAt": "2026-06-01T17:46:37.176Z",
+      "id": 17
+    },
+    {
+      "userId": 12,
+      "userName": "JUDITE NASCIMENTO",
+      "userDoc": "017",
+      "servicos": [
+        "Abrir nova conta",
+        "Configurar app"
+      ],
+      "agencia": "Agência Norte",
+      "data": "2026-06-02",
+      "hora": "09h00",
+      "status": "cancelled",
+      "createdAt": "2026-06-01T18:07:31.487Z",
+      "id": 18
+    },
+    {
+      "userId": 1,
+      "userName": "CARLOS NASCIMENTO",
+      "userDoc": "010",
+      "servicos": [
+        "Abrir nova conta"
+      ],
+      "agencia": "Agência Central",
+      "data": "2026-06-02",
+      "hora": "14h40",
+      "status": "completed",
+      "createdAt": "2026-06-01T18:20:08.904Z",
+      "id": 19
+    },
+    {
+      "userId": 1,
+      "userName": "CARLOS NASCIMENTO",
+      "userDoc": "010",
+      "servicos": [
+        "Saque Volumoso"
+      ],
+      "agencia": "Agência Central",
+      "data": "2026-06-02",
+      "hora": "10h00",
+      "status": "cancelled",
+      "createdAt": "2026-06-01T18:36:38.343Z",
+      "id": 20
+    },
+    {
+      "userId": 1,
+      "userName": "CARLOS NASCIMENTO",
+      "userDoc": "010",
+      "servicos": [
+        "Abrir nova conta"
+      ],
+      "agencia": "Agência Central",
+      "data": "2026-06-02",
+      "hora": "10h00",
+      "status": "cancelled",
+      "createdAt": "2026-06-01T18:52:25.660Z",
+      "id": 21
+    },
+    {
+      "userId": 1,
+      "userName": "CARLOS NASCIMENTO",
+      "userDoc": "010",
+      "servicos": [
+        "Saque Volumoso"
+      ],
+      "agencia": "Agência Central",
+      "data": "2026-06-03",
+      "hora": "09h20",
+      "status": "completed",
+      "createdAt": "2026-06-01T18:58:14.128Z",
+      "id": 22
+    },
+    {
+      "userId": 1,
+      "userName": "CARLOS NASCIMENTO",
+      "userDoc": "010",
+      "servicos": [
+        "Abrir nova conta"
+      ],
+      "agencia": "Agência Central",
+      "data": "2026-06-02",
+      "hora": "10h20",
+      "status": "completed",
+      "createdAt": "2026-06-01T19:23:25.573Z",
+      "id": 23
+    },
+    {
+      "userId": 1,
+      "userName": "SHERK",
+      "userDoc": "010",
+      "servicos": [
+        "Configurar app"
+      ],
+      "agencia": "Agência Central",
+      "data": "2026-06-02",
+      "hora": "11h40",
+      "status": "pending",
+      "createdAt": "2026-06-01T20:04:11.944Z",
+      "id": 24
+    }
+  ]
+}

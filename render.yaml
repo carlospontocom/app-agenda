@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: agenda-api
+    env: node
+    region: ohio
+    plan: free
+    buildCommand: cd backend && npm install && npm run build
+    startCommand: cd backend && npm start
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: 4000
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        sync: false
+
+  - type: web
+    name: agenda-frontend
+    env: static
+    region: ohio
+    plan: free
+    buildCommand: cd agenda-bancaria && npm install && npm run build
+    staticPublishPath: agenda-bancaria/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://agenda-api.onrender.com/api

@@ -1,0 +1,174 @@
+@use 'variaveis' as *;
+
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(0.5em - 1px) 1em;
+  height: $altura-botao;
+  font-size: $tamanho-normal;
+  font-family: $fonte-padrao;
+  font-weight: 400;
+  line-height: 1.5;
+  border: 1px solid $cor-cinza-claro;
+  border-radius: $raio-botao;
+  background: $cor-branca;
+  color: $cor-escura;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  @include transicao;
+
+  &:hover {
+    border-color: escurecer($cor-cinza-claro, 10%);
+  }
+
+  &.primario {
+    background: $cor-primaria;
+    border-color: $cor-primaria;
+    color: $cor-branca;
+
+    &:hover {
+      background: escurecer($cor-primaria, 5%);
+      border-color: escurecer($cor-primaria, 5%);
+    }
+  }
+
+  &.informativo {
+    background: $cor-informativo;
+    border-color: $cor-informativo;
+    color: $cor-branca;
+
+    &:hover {
+      background: escurecer($cor-informativo, 5%);
+      border-color: escurecer($cor-informativo, 5%);
+    }
+  }
+
+  &.sucesso {
+    background: $cor-sucesso;
+    border-color: $cor-sucesso;
+    color: $cor-branca;
+
+    &:hover {
+      background: escurecer($cor-sucesso, 5%);
+      border-color: escurecer($cor-sucesso, 5%);
+    }
+  }
+
+  &.aviso {
+    background: $cor-aviso;
+    border-color: $cor-aviso;
+    color: rgba(0, 0, 0, 0.7);
+
+    &:hover {
+      background: escurecer($cor-aviso, 5%);
+      border-color: escurecer($cor-aviso, 5%);
+    }
+  }
+
+  &.perigo {
+    background: $cor-perigo;
+    border-color: $cor-perigo;
+    color: $cor-branca;
+
+    &:hover {
+      background: escurecer($cor-perigo, 5%);
+      border-color: escurecer($cor-perigo, 5%);
+    }
+  }
+
+  &.escuro {
+    background: $cor-escura;
+    border-color: $cor-escura;
+    color: $cor-branca;
+
+    &:hover {
+      background: clarear($cor-escura, 5%);
+      border-color: clarear($cor-escura, 5%);
+    }
+  }
+
+  &.claro {
+    background: $cor-clara;
+    border-color: $cor-clara;
+    color: rgba(0, 0, 0, 0.7);
+
+    &:hover {
+      background: escurecer($cor-clara, 5%);
+      border-color: escurecer($cor-clara, 5%);
+    }
+  }
+
+  &.pequeno {
+    font-size: $tamanho-pequeno;
+    height: 2em;
+    padding: calc(0.25em - 1px) 0.75em;
+  }
+
+  &.medio {
+    font-size: 1.25rem;
+  }
+
+  &.grande {
+    font-size: 1.5rem;
+    height: 3.25em;
+  }
+
+  &.largura-total {
+    width: 100%;
+    display: flex;
+  }
+
+  &.carregando {
+    color: transparent !important;
+    pointer-events: none;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 1em;
+      height: 1em;
+      border: 2px solid currentColor;
+      border-color: transparent currentColor currentColor currentColor;
+      border-radius: 50%;
+      animation: girar 0.5s infinite linear;
+    }
+  }
+}
+
+@keyframes girar {
+  to { transform: rotate(360deg); }
+}
+
+.grupo-botoes {
+  display: flex;
+  gap: $espaco-2;
+
+  @include ate-tablet {
+    flex-wrap: wrap;
+
+    &.pequenos {
+      .botao {
+        font-size: $tamanho-pequeno;
+        height: 2em;
+        padding: calc(0.25em - 1px) 0.75em;
+      }
+    }
+  }
+
+  &.centralizado {
+    justify-content: center;
+  }
+
+  &.pequenos {
+    gap: $espaco-1;
+
+    .botao {
+      font-size: $tamanho-pequeno;
+      height: 2em;
+      padding: calc(0.25em - 1px) 0.75em;
+    }
+  }
+}

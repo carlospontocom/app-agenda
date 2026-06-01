@@ -1,0 +1,71 @@
+@use 'variaveis' as *;
+
+// Alinhamento
+.texto-centralizado { text-align: center; }
+.texto-esquerda { text-align: left; }
+.texto-direita { text-align: right; }
+.texto-cinza { color: $cor-cinza; }
+.texto-negrito { font-weight: 700; }
+.texto-branco { color: $cor-branca; }
+.texto-primario { color: $cor-primaria; }
+.texto-informativo { color: $cor-informativo; }
+.texto-sucesso { color: $cor-sucesso; }
+.texto-aviso { color: $cor-aviso; }
+.texto-perigo { color: $cor-perigo; }
+
+.borda-sucesso { border-color: $cor-sucesso !important; }
+.borda-perigo { border-color: $cor-perigo !important; }
+
+// Oculta
+.oculto { display: none; }
+.visivel-tablet { @include ate-tablet { display: none; } }
+.visivel-desktop { @include ate-tablet { display: none; } @include de-tablet-em-diante { display: none; } @include de-desktop-em-diante { display: block; } }
+
+// Margens
+.m-0 { margin: 0; }
+.m-1 { margin: $espaco-1; }
+.m-2 { margin: $espaco-2; }
+.m-3 { margin: $espaco-3; }
+.m-4 { margin: $espaco-4; }
+.m-5 { margin: $espaco-5; }
+
+.mt-0 { margin-top: 0; }
+.mt-1 { margin-top: $espaco-1; }
+.mt-2 { margin-top: $espaco-2; }
+.mt-3 { margin-top: $espaco-3; }
+.mt-4 { margin-top: $espaco-4; }
+.mt-5 { margin-top: $espaco-5; }
+.mt-6 { margin-top: $espaco-6; }
+
+.mb-0 { margin-bottom: 0; }
+.mb-1 { margin-bottom: $espaco-1; }
+.mb-2 { margin-bottom: $espaco-2; }
+.mb-3 { margin-bottom: $espaco-3; }
+.mb-4 { margin-bottom: $espaco-4; }
+.mb-5 { margin-bottom: $espaco-5; }
+
+.mr-1 { margin-right: $espaco-1; }
+.mr-2 { margin-right: $espaco-2; }
+.mr-3 { margin-right: $espaco-3; }
+
+.ml-1 { margin-left: $espaco-1; }
+.ml-2 { margin-left: $espaco-2; }
+
+// Preenchimento
+.p-0 { padding: 0; }
+.p-1 { padding: $espaco-1; }
+.p-2 { padding: $espaco-2; }
+.p-3 { padding: $espaco-3; }
+.p-4 { padding: $espaco-4; }
+.p-5 { padding: $espaco-5; }
+
+.pt-4 { padding-top: $espaco-4; }
+.pb-4 { padding-bottom: $espaco-4; }
+
+// Sombra
+.sombra-pequena { @include sombra(pequena); }
+.sombra-media { @include sombra(media); }
+
+// Borda
+.borda-arredondada { @include borda-arredondada; }
+.borda-arredondada-grande { border-radius: $raio-borda * 2; }

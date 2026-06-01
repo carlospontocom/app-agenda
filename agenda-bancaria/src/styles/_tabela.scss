@@ -1,0 +1,42 @@
+@use 'variaveis' as *;
+
+.tabela-container {
+  overflow-x: auto;
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  background: $cor-branca;
+  border-radius: $raio-borda;
+  @include borda-arredondada;
+
+  th, td {
+    padding: 0.75em 1em;
+    text-align: left;
+    border-bottom: 1px solid $cor-cinza-claro;
+    vertical-align: middle;
+  }
+
+  th {
+    background: $cor-clara;
+    font-weight: 600;
+    color: $cor-escura;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  &.listrada tbody tr:nth-child(even) {
+    background: clarear($cor-clara, 2%);
+  }
+
+  &.suspensivel tbody tr:hover {
+    background: escurecer($cor-clara, 2%);
+  }
+
+  &.largura-total {
+    width: 100%;
+  }
+}

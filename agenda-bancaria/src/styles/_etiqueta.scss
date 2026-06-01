@@ -1,0 +1,47 @@
+@use 'variaveis' as *;
+
+.etiqueta {
+  display: inline-flex;
+  align-items: center;
+  font-size: $tamanho-pequeno;
+  font-weight: 500;
+  padding: 0.2em 0.75em;
+  border-radius: $raio-botao;
+  white-space: nowrap;
+  @include borda-arredondada;
+
+  &.clara {
+    background: $cor-clara;
+    color: $cor-escura;
+  }
+
+  &.escura {
+    background: $cor-escura;
+    color: $cor-branca;
+  }
+
+  &.primaria {
+    background: $cor-primaria;
+    color: $cor-branca;
+  }
+
+  &.aviso {
+    background: $cor-aviso;
+    color: rgba(0, 0, 0, 0.7);
+  }
+
+  &.informativa {
+    background: $cor-informativo;
+    color: $cor-branca;
+  }
+
+  &.sucesso {
+    background: $cor-sucesso;
+    color: $cor-branca;
+  }
+
+  &.perigo {
+    background: $cor-perigo;
+    color: $cor-branca;
+  }
+}

@@ -1,0 +1,124 @@
+@use 'variaveis' as *;
+
+.campo {
+  margin-bottom: $espaco-5;
+
+  .rotulo {
+    display: block;
+    font-weight: 600;
+    color: $cor-escura;
+    margin-bottom: $espaco-2;
+    font-size: $tamanho-normal;
+  }
+
+  .controle {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .entrada {
+    width: 100%;
+    padding: calc(0.5em - 1px) calc(0.75em - 1px);
+    font-size: $tamanho-normal;
+    font-family: $fonte-padrao;
+    border: $borda-padrao;
+    border-radius: $raio-botao;
+    background: $cor-branca;
+    color: $cor-escura;
+    height: 2.5em;
+    text-transform: uppercase;
+    @include transicao;
+
+    &:focus {
+      border-color: $cor-informativo;
+      outline: none;
+      box-shadow: 0 0 0 0.125em rgba($cor-informativo, 0.25);
+    }
+
+    &[readonly] {
+      background: $cor-clara;
+      cursor: not-allowed;
+    }
+
+    &[type="email"],
+    &[type="password"],
+    &[type="date"] {
+      text-transform: none;
+    }
+  }
+
+  select.entrada {
+    text-transform: none;
+  }
+
+  .selecao {
+    width: 100%;
+    padding: calc(0.5em - 1px) calc(2.2em - 1px) calc(0.5em - 1px) calc(0.75em - 1px);
+    font-size: $tamanho-normal;
+    font-family: $fonte-padrao;
+    border: $borda-padrao;
+    border-radius: $raio-botao;
+    background: $cor-branca;
+    color: $cor-escura;
+    height: 2.5em;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23363636' d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75em center;
+    @include transicao;
+
+    &:focus {
+      border-color: $cor-informativo;
+      outline: none;
+      box-shadow: 0 0 0 0.125em rgba($cor-informativo, 0.25);
+    }
+
+    &:disabled {
+      background: $cor-clara;
+      cursor: not-allowed;
+    }
+
+    &.largura-total {
+      width: 100%;
+    }
+  }
+}
+
+.com-icone-esquerda .entrada,
+.com-icone-esquerda .selecao {
+  padding-left: 2.2em;
+}
+
+.com-icone-direita .entrada,
+.com-icone-direita .selecao {
+  padding-right: 2.2em;
+}
+
+.icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: $cor-cinza;
+
+  &.esquerda {
+    position: absolute;
+    left: 0.75em;
+    z-index: 1;
+  }
+
+  &.direita {
+    position: absolute;
+    right: 0.75em;
+    z-index: 1;
+  }
+
+  &.pequena {
+    font-size: $tamanho-pequeno;
+  }
+
+  &[style*="cursor"] {
+    cursor: pointer;
+  }
+}

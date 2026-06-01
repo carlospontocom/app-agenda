@@ -1,0 +1,80 @@
+@use 'sass:math';
+@use 'variaveis' as *;
+
+.container {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+
+  @include de-desktop-em-diante {
+    max-width: 1152px;
+  }
+}
+
+.secao {
+  padding: $espaco-6 1.5rem;
+
+  @include ate-tablet {
+    padding: $espaco-5 0.75rem;
+  }
+}
+
+.linha {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -0.75rem;
+
+  &.multipla {
+    flex-wrap: wrap;
+  }
+
+  &.centralizada {
+    justify-content: center;
+  }
+
+  &.vertical-centralizada {
+    align-items: center;
+  }
+}
+
+.coluna {
+  flex: none;
+  padding: 0.75rem;
+
+  @for $i from 1 through 12 {
+    &-#{$i} {
+      width: math.percentage(math.div($i, 12));
+    }
+  }
+
+  &.metade { width: 50%; }
+  &.um-terco { width: 33.3333%; }
+  &.dois-tercos { width: 66.6667%; }
+  &.um-quarto { width: 25%; }
+  &.tres-quartos { width: 75%; }
+
+  @include ate-tablet {
+    width: 100%;
+
+    &.metade,
+    &.um-terco,
+    &.dois-tercos,
+    &.um-quarto,
+    &.tres-quartos {
+      width: 100%;
+    }
+
+    @for $i from 1 through 12 {
+      &-#{$i} {
+        width: 100%;
+      }
+    }
+  }
+
+  &.nao-quebra-mobile {
+    @include ate-tablet {
+      overflow-x: auto;
+      flex-wrap: nowrap;
+    }
+  }
+}

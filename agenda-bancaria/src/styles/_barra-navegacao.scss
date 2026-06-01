@@ -1,0 +1,70 @@
+@use 'variaveis' as *;
+
+.barra-navegacao {
+  background: $cor-fundo-navbar;
+  color: $cor-texto-navbar;
+  display: flex;
+  align-items: center;
+  padding: 0 $espaco-4;
+  min-height: 3.25rem;
+  position: relative;
+  @include sombra(pequena);
+
+  .marca {
+    display: flex;
+    align-items: center;
+    color: $cor-branca;
+    font-weight: 700;
+    padding: $espaco-2 $espaco-3;
+    text-decoration: none;
+    @include transicao;
+
+    &:hover {
+      background: $cor-hover-navbar;
+    }
+  }
+
+  .menu-navbar {
+    display: flex;
+    flex: 1;
+    align-items: center;
+
+    @include ate-tablet {
+      flex-direction: column;
+    }
+  }
+
+  .fim-navbar {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+
+    @include ate-tablet {
+      margin-left: 0;
+      width: 100%;
+      flex-direction: column;
+    }
+  }
+
+  .item-navbar {
+    display: flex;
+    align-items: center;
+    color: $cor-clara;
+    padding: $espaco-2 $espaco-3;
+    text-decoration: none;
+    font-size: $tamanho-normal;
+    @include transicao;
+
+    &:hover {
+      background: $cor-hover-navbar;
+      color: $cor-branca;
+    }
+  }
+
+  .acoes-navbar {
+    display: flex;
+    align-items: center;
+    gap: $espaco-2;
+    padding: $espaco-2 $espaco-3;
+  }
+}
