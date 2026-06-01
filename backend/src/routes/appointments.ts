@@ -20,6 +20,35 @@ const router = Router()
  *     responses:
  *       200: { description: Lista de agendamentos }
  */
+/**
+ * @openapi
+ * /api/appointments/check:
+ *   get:
+ *     tags: [Agendamentos]
+ *     summary: Verificar horários ocupados (público)
+ *     parameters:
+ *       - in: query
+ *         name: agencia
+ *         schema: { type: string }
+ *       - in: query
+ *         name: data
+ *         schema: { type: string }
+ *     responses:
+ *       200: { description: Lista de horários ocupados }
+ */
+router.get('/check', async (req: Request, res: Response) => {
+  try {
+    const { agencia, data } = req.query
+    const [rows] = await pool.query<any[]>(
+      "SELECT hora FROM appointments WHERE agencia = ? AND data = ? AND status != 'cancelled'",
+      [agencia, data]
+    )
+    res.json(rows.map((r: any) => r.hora))
+  } catch (err: any) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
 router.get('/', authenticate, async (req: Request, res: Response) => {
   try {
     const { userId } = req.query

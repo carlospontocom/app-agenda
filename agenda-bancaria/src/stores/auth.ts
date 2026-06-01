@@ -3,6 +3,10 @@ import { ref, computed } from 'vue'
 import api from '../services/api'
 import type { User } from '../types'
 
+function extractError(e: any): string {
+  return e.response?.data?.error || e.message || 'Erro desconhecido'
+}
+
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null)
   const adminLogado = ref(false)
@@ -17,93 +21,95 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function register(dados: User): Promise<void> {
-    const { data: existentes } = await api.get<User[]>('users', {
-      params: { email: dados.email }
-    })
-    if (existentes.length > 0) throw new Error('Email já cadastrado')
-
-    const { data: existentesDoc } = await api.get<User[]>('users', {
-      params: { docPessoal: dados.docPessoal }
-    })
-    if (existentesDoc.length > 0) throw new Error('Documento já cadastrado')
-
-    dados.createdAt = new Date().toISOString()
-    dados.ativo = true
-    const { data: novo } = await api.post<User>('users', dados)
-    return
+    try {
+      await api.post('auth/register', dados)
+    } catch (e: any) {
+      throw new Error(extractError(e))
+    }
   }
 
   async function login(email: string, senha: string): Promise<User> {
-    const { data: users } = await api.get<User[]>('users', {
-      params: { email, senha }
-    })
-    if (users.length === 0) throw new Error('Email ou senha inválidos')
-    if (users[0].ativo === false) throw new Error('Sua conta está inativa. Entre em contato com o administrador.')
-    user.value = users[0]
-    localStorage.setItem('agenda_user', JSON.stringify(user.value))
-    if (email.endsWith('@banco.com')) {
-      adminLogado.value = true
-      localStorage.setItem('agenda_admin', 'true')
+    try {
+      const { data } = await api.post<{ token: string; user: User }>('auth/login', { email, senha })
+      localStorage.setItem('agenda_token', data.token)
+      user.value = data.user
+      localStorage.setItem('agenda_user', JSON.stringify(user.value))
+      if ((data.user as any).isAdmin || email.endsWith('@banco.com')) {
+        adminLogado.value = true
+        localStorage.setItem('agenda_admin', 'true')
+      }
+      return user.value
+    } catch (e: any) {
+      throw new Error(extractError(e))
     }
-    return user.value
   }
 
   function logout() {
     user.value = null
     localStorage.removeItem('agenda_user')
+    localStorage.removeItem('agenda_token')
     adminLogado.value = false
     localStorage.removeItem('agenda_admin')
   }
 
-  async function recoverPassword(doc: string, dataNasc: string, email: string): Promise<User> {
-    const { data: users } = await api.get<User[]>('users', {
-      params: { docPessoal: doc, data_nascimento: dataNasc, email }
-    })
-    if (users.length === 0) throw new Error('Dados não conferem')
-    if (users[0].ativo === false) throw new Error('Sua conta está inativa. Entre em contato com o administrador.')
-    return users[0]
+  async function recoverPassword(doc: string, dataNasc: string, email: string): Promise<number> {
+    try {
+      const { data } = await api.post<{ userId: number; message: string }>('auth/recover', {
+        docPessoal: doc, data_nascimento: dataNasc, email
+      })
+      return data.userId
+    } catch (e: any) {
+      throw new Error(extractError(e))
+    }
   }
 
-  async function updatePassword(userId: number, novaSenha: string): Promise<void> {
-    await api.patch(`users/${userId}`, { senha: novaSenha })
+  async function updatePassword(novaSenha: string, userId?: number): Promise<void> {
+    try {
+      if (userId) {
+        await api.post('auth/reset-password', { userId, senha: novaSenha })
+      } else {
+        await api.post('auth/update-password', { senha: novaSenha })
+      }
+    } catch (e: any) {
+      throw new Error(extractError(e))
+    }
   }
 
   async function updateUser(id: number, dados: Partial<User>): Promise<void> {
-    const { data } = await api.patch<User>(`users/${id}`, dados)
-    if (user.value && user.value.id === id) {
-      user.value = { ...user.value, ...data }
-      localStorage.setItem('agenda_user', JSON.stringify(user.value))
+    try {
+      const response = await api.patch<User>('profile', dados)
+      if (user.value && user.value.id === id) {
+        user.value = { ...user.value, ...response.data }
+        localStorage.setItem('agenda_user', JSON.stringify(user.value))
+      }
+    } catch (e: any) {
+      throw new Error(extractError(e))
     }
   }
 
   // Admin
   async function loginAdmin(email: string, senha: string): Promise<boolean> {
-    // superadmin fixo de fallback
     if (email === 'admin@gmail.com' && senha === '@123123') {
       adminLogado.value = true
       localStorage.setItem('agenda_admin', 'true')
       return true
     }
-    // qualquer email @banco.com
     if (!email.endsWith('@banco.com')) return false
     try {
-      const { data: users } = await api.get<User[]>('users', {
-        params: { email, senha }
-      })
-      if (users.length > 0) {
-        adminLogado.value = true
-        localStorage.setItem('agenda_admin', 'true')
-        return true
-      }
+      const { data } = await api.post<{ token: string; user: User }>('admin/login', { email, senha })
+      localStorage.setItem('agenda_token', data.token)
+      adminLogado.value = true
+      localStorage.setItem('agenda_admin', 'true')
+      return true
     } catch {
-      // fallback
+      return false
     }
-    return false
   }
 
   function logoutAdmin() {
     adminLogado.value = false
     localStorage.removeItem('agenda_admin')
+    localStorage.removeItem('agenda_token')
   }
 
   carregarSessao()

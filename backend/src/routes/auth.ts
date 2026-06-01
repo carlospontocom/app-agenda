@@ -96,8 +96,9 @@ router.post('/login', async (req: Request, res: Response) => {
       return
     }
 
-    const token = generateToken({ userId: user.id!, isAdmin: false })
-    res.json({ token, user })
+    const isAdmin = user.email === 'admin@gmail.com' || user.email.endsWith('@banco.com')
+    const token = generateToken({ userId: user.id!, isAdmin })
+    res.json({ token, user: { ...user, isAdmin } })
   } catch (err: any) {
     res.status(500).json({ error: err.message })
   }
@@ -166,6 +167,34 @@ router.post('/recover', async (req: Request, res: Response) => {
  *     responses:
  *       200: { description: Senha atualizada }
  */
+/**
+ * @openapi
+ * /api/auth/reset-password:
+ *   post:
+ *     tags: [Autenticação]
+ *     summary: Redefinir senha (sem token, fluxo de recuperação)
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               userId: { type: number }
+ *               senha: { type: string }
+ *     responses:
+ *       200: { description: Senha redefinida }
+ */
+router.post('/reset-password', async (req: Request, res: Response) => {
+  try {
+    const { userId, senha } = req.body
+    await pool.query('UPDATE users SET senha = ? WHERE id = ?', [senha, userId])
+    res.json({ message: 'Senha redefinida com sucesso' })
+  } catch (err: any) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
 router.post('/update-password', authenticate, async (req: Request, res: Response) => {
   try {
     const { senha } = req.body

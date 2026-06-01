@@ -23,25 +23,20 @@ export const useAppointmentsStore = defineStore('appointments', () => {
 
   async function fetchAll() {
     loading.value = true
-    const { data } = await api.get<Appointment[]>('appointments', {
-      params: { _sort: 'data,hora', _order: 'asc' }
-    })
+    const { data } = await api.get<Appointment[]>('appointments')
     appointments.value = data
     loading.value = false
   }
 
   async function fetchByUser(userId: number) {
     loading.value = true
-    const { data } = await api.get<Appointment[]>('appointments', {
-      params: { userId }
-    })
+    const { data } = await api.get<Appointment[]>(`appointments/user/${userId}`)
     appointments.value = data
     loading.value = false
   }
 
   async function create(app: Omit<Appointment, 'id' | 'createdAt'>): Promise<void> {
-    const payload = { ...app, createdAt: new Date().toISOString() }
-    await api.post('appointments', payload)
+    await api.post('appointments', app)
   }
 
   async function update(id: number, app: Partial<Omit<Appointment, 'id' | 'createdAt'>>): Promise<void> {
@@ -54,7 +49,7 @@ export const useAppointmentsStore = defineStore('appointments', () => {
   }
 
   async function updateStatus(id: number, status: Appointment['status']): Promise<void> {
-    await api.patch(`appointments/${id}`, { status })
+    await api.patch(`appointments/${id}/status`, { status })
     const idx = appointments.value.findIndex(a => a.id === id)
     if (idx >= 0) appointments.value[idx].status = status
   }

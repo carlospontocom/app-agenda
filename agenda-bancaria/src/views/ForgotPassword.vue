@@ -24,8 +24,7 @@ async function verificarDados() {
   }
   loading.value = true
   try {
-    const user = await auth.recoverPassword(doc.value, dataNasc.value, email.value)
-    userId.value = user.id!
+    userId.value = await auth.recoverPassword(doc.value, dataNasc.value, email.value)
     step.value = 'reset'
   } catch (e: any) {
     error.value = e.message
@@ -46,7 +45,7 @@ async function redefinirSenha() {
   }
   loading.value = true
   try {
-    await auth.updatePassword(userId.value!, novaSenha.value)
+    await auth.updatePassword(novaSenha.value, userId.value!)
     success.value = 'Senha redefinida com sucesso!'
     setTimeout(() => router.push('/entrar'), 2000)
   } catch (e: any) {

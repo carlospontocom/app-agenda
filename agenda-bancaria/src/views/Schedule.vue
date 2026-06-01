@@ -92,16 +92,10 @@ function selecionarData(value: string) {
 async function checkBlocked() {
   if (!form.data || !form.agencia) return
   try {
-    const { data } = await api.get('/appointments', {
-      params: {
-        agencia: form.agencia,
-        data: form.data,
-        status_ne: 'cancelled'
-      }
+    const { data } = await api.get<string[]>('appointments/check', {
+      params: { agencia: form.agencia, data: form.data }
     })
-    blockedSlots.value = data
-      .filter((a: any) => !editMode.value || a.id !== appStore.currentAppointment?.id)
-      .map((a: any) => a.hora)
+    blockedSlots.value = data.filter(h => !editMode.value || h !== appStore.currentAppointment?.hora)
   } catch {
     blockedSlots.value = []
   }

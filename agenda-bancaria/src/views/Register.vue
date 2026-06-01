@@ -3,7 +3,6 @@ import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { buscarCep } from '../services/cep'
-import api from '../services/api'
 import { formatDate } from '../types'
 import type { User } from '../types'
 import { maskDoc, maskTelefone } from '../composables/useMasks'
@@ -43,26 +42,7 @@ async function verificarCadastro() {
     error.value = 'Preencha documento e email'
     return
   }
-  loading.value = true
-  try {
-    const { data: docs } = await api.get<User[]>('users', {
-      params: { docPessoal: form.docPessoal.replace(/\D/g, '') }
-    })
-    if (docs.length > 0) {
-      jaCadastrado.value = 'Documento'
-      return
-    }
-    const { data: emails } = await api.get<User[]>('users', {
-      params: { email: form.email }
-    })
-    if (emails.length > 0) {
-      jaCadastrado.value = 'Email'
-      return
-    }
-    step.value = 2
-  } finally {
-    loading.value = false
-  }
+  step.value = 2
 }
 
 async function buscarEndereco() {
@@ -139,7 +119,7 @@ async function handleRegister() {
     await auth.register(dados)
     step.value = 6
   } catch (e: any) {
-    error.value = e.message
+    error.value = e.response?.data?.error || e.message
   } finally {
     loading.value = false
   }
