@@ -23,33 +23,33 @@ export const useAppointmentsStore = defineStore('appointments', () => {
 
   async function fetchAll() {
     loading.value = true
-    const { data } = await api.get<Appointment[]>('appointments')
+    const { data } = await api.get<Appointment[]>('agendamentos')
     appointments.value = data
     loading.value = false
   }
 
   async function fetchByUser(userId: number) {
     loading.value = true
-    const { data } = await api.get<Appointment[]>(`appointments/user/${userId}`)
+    const { data } = await api.get<Appointment[]>(`agendamentos/user/${userId}`)
     appointments.value = data
     loading.value = false
   }
 
   async function create(app: Omit<Appointment, 'id' | 'createdAt'>): Promise<void> {
-    await api.post('appointments', app)
+    await api.post('agendamentos', app)
   }
 
   async function update(id: number, app: Partial<Omit<Appointment, 'id' | 'createdAt'>>): Promise<void> {
-    await api.patch(`appointments/${id}`, app)
+    await api.patch(`agendamentos/${id}`, app)
   }
 
   async function remove(id: number): Promise<void> {
-    await api.delete(`appointments/${id}`)
+    await api.delete(`agendamentos/${id}`)
     appointments.value = appointments.value.filter(a => a.id !== id)
   }
 
   async function updateStatus(id: number, status: Appointment['status']): Promise<void> {
-    await api.patch(`appointments/${id}/status`, { status })
+    await api.patch(`agendamentos/${id}/status`, { status })
     const idx = appointments.value.findIndex(a => a.id === id)
     if (idx >= 0) appointments.value[idx].status = status
   }

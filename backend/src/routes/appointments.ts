@@ -7,7 +7,7 @@ const router = Router()
 
 /**
  * @openapi
- * /api/appointments:
+ * /api/agendamentos:
  *   get:
  *     tags: [Agendamentos]
  *     summary: Listar agendamentos (admin vê todos, user vê próprios)
@@ -22,7 +22,7 @@ const router = Router()
  */
 /**
  * @openapi
- * /api/appointments/check:
+ * /api/agendamentos/check:
  *   get:
  *     tags: [Agendamentos]
  *     summary: Verificar horários ocupados (público)
@@ -36,11 +36,11 @@ const router = Router()
  *     responses:
  *       200: { description: Lista de horários ocupados }
  */
-router.get('/check', async (req: Request, res: Response) => {
+router.get('/checar', async (req: Request, res: Response) => {
   try {
     const { agencia, data } = req.query
     const [rows] = await pool.query<any[]>(
-      "SELECT hora FROM appointments WHERE agencia = ? AND data = ? AND status != 'cancelled'",
+      "SELECT hora FROM agendamentos WHERE agencia = ? AND data = ? AND status != 'cancelled'",
       [agencia, data]
     )
     res.json(rows.map((r: any) => r.hora))
@@ -54,7 +54,7 @@ router.get('/', authenticate, async (req: Request, res: Response) => {
     const { userId } = req.query
     const isAdmin = req.user!.isAdmin
 
-    let sql = 'SELECT * FROM appointments'
+    let sql = 'SELECT * FROM agendamentos'
     const params: any[] = []
 
     if (userId) {
@@ -81,7 +81,7 @@ router.get('/', authenticate, async (req: Request, res: Response) => {
 
 /**
  * @openapi
- * /api/appointments/user/{userId}:
+ * /api/agendamentos/user/{userId}:
  *   get:
  *     tags: [Agendamentos]
  *     summary: Listar agendamentos de um usuário
@@ -96,7 +96,7 @@ router.get('/', authenticate, async (req: Request, res: Response) => {
  */
 router.get('/user/:userId', authenticate, async (req: Request, res: Response) => {
   try {
-    const [rows] = await pool.query<any[]>('SELECT * FROM appointments WHERE userId = ? ORDER BY createdAt DESC', [req.params.userId])
+    const [rows] = await pool.query<any[]>('SELECT * FROM agendamentos WHERE userId = ? ORDER BY createdAt DESC', [req.params.userId])
     const appointments = rows.map((row: any) => ({
       ...row,
       servicos: typeof row.servicos === 'string' ? JSON.parse(row.servicos) : row.servicos
@@ -109,7 +109,7 @@ router.get('/user/:userId', authenticate, async (req: Request, res: Response) =>
 
 /**
  * @openapi
- * /api/appointments:
+ * /api/agendamentos:
  *   post:
  *     tags: [Agendamentos]
  *     summary: Criar novo agendamento
@@ -138,7 +138,7 @@ router.post('/', authenticate, async (req: Request, res: Response) => {
 
     // Check max 1 active appointment
     const [active] = await pool.query<any[]>(
-      "SELECT id FROM appointments WHERE userId = ? AND status IN ('pending', 'confirmed')",
+      "SELECT id FROM agendamentos WHERE userId = ? AND status IN ('pending', 'confirmed')",
       [userId]
     )
     if (active.length > 0) {
@@ -153,7 +153,7 @@ router.post('/', authenticate, async (req: Request, res: Response) => {
     }
 
     const [result] = await pool.query<any>(
-      `INSERT INTO appointments (userId, userName, userDoc, servicos, agencia, data, hora, status)
+      `INSERT INTO agendamentos (userId, userName, userDoc, servicos, agencia, data, hora, status)
        VALUES (?, ?, ?, ?, ?, ?, ?, 'pending')`,
       [userId, userName, userDoc, JSON.stringify(servicos), agencia, data, hora]
     )
@@ -166,7 +166,7 @@ router.post('/', authenticate, async (req: Request, res: Response) => {
 
 /**
  * @openapi
- * /api/appointments/{id}:
+ * /api/agendamentos/{id}:
  *   patch:
  *     tags: [Agendamentos]
  *     summary: Atualizar agendamento
@@ -205,7 +205,7 @@ router.patch('/:id', authenticate, async (req: Request, res: Response) => {
     }
 
     params.push(req.params.id)
-    await pool.query(`UPDATE appointments SET ${updates.join(', ')} WHERE id = ?`, params)
+    await pool.query(`UPDATE agendamentos SET ${updates.join(', ')} WHERE id = ?`, params)
     res.json({ message: 'Agendamento atualizado' })
   } catch (err: any) {
     res.status(500).json({ error: err.message })
@@ -214,7 +214,7 @@ router.patch('/:id', authenticate, async (req: Request, res: Response) => {
 
 /**
  * @openapi
- * /api/appointments/{id}:
+ * /api/agendamentos/{id}:
  *   delete:
  *     tags: [Agendamentos]
  *     summary: Excluir agendamento
@@ -229,7 +229,7 @@ router.patch('/:id', authenticate, async (req: Request, res: Response) => {
  */
 router.delete('/:id', authenticate, async (req: Request, res: Response) => {
   try {
-    await pool.query('DELETE FROM appointments WHERE id = ?', [req.params.id])
+    await pool.query('DELETE FROM agendamentos WHERE id = ?', [req.params.id])
     res.json({ message: 'Agendamento excluído' })
   } catch (err: any) {
     res.status(500).json({ error: err.message })
@@ -238,7 +238,7 @@ router.delete('/:id', authenticate, async (req: Request, res: Response) => {
 
 /**
  * @openapi
- * /api/appointments/{id}/status:
+ * /api/agendamentos/{id}/status:
  *   patch:
  *     tags: [Agendamentos]
  *     summary: Atualizar status do agendamento (admin)
@@ -264,7 +264,7 @@ router.delete('/:id', authenticate, async (req: Request, res: Response) => {
 router.patch('/:id/status', authenticate, async (req: Request, res: Response) => {
   try {
     const { status } = req.body
-    await pool.query('UPDATE appointments SET status = ? WHERE id = ?', [status, req.params.id])
+    await pool.query('UPDATE agendamentos SET status = ? WHERE id = ?', [status, req.params.id])
     res.json({ message: 'Status atualizado' })
   } catch (err: any) {
     res.status(500).json({ error: err.message })

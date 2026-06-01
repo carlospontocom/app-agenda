@@ -16,7 +16,7 @@ const router = Router()
  */
 router.get('/', authenticate, async (req: Request, res: Response) => {
   try {
-    const [users] = await pool.query<any[]>('SELECT * FROM users WHERE id = ?', [req.user!.userId])
+    const [users] = await pool.query<any[]>('SELECT * FROM usuarios WHERE id = ?', [req.user!.userId])
     if (users.length === 0) {
       res.status(404).json({ error: 'Usuário não encontrado' })
       return
@@ -63,7 +63,7 @@ router.patch('/', authenticate, async (req: Request, res: Response) => {
     }
 
     params.push(req.user!.userId)
-    await pool.query(`UPDATE users SET ${updates.join(', ')} WHERE id = ?`, params)
+    await pool.query(`UPDATE usuarios SET ${updates.join(', ')} WHERE id = ?`, params)
     res.json({ message: 'Perfil atualizado com sucesso' })
   } catch (err: any) {
     res.status(500).json({ error: err.message })

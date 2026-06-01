@@ -27,7 +27,7 @@ const router = Router()
 router.post('/login', async (req: Request, res: Response) => {
   try {
     const { email, senha } = req.body
-    const [users] = await pool.query<any[]>('SELECT * FROM users WHERE email = ? AND senha = ?', [email, senha])
+    const [users] = await pool.query<any[]>('SELECT * FROM usuarios WHERE email = ? AND senha = ?', [email, senha])
 
     if (users.length === 0) {
       res.status(401).json({ error: 'Credenciais inválidas' })
@@ -50,7 +50,7 @@ router.post('/login', async (req: Request, res: Response) => {
 
 /**
  * @openapi
- * /api/admin/users:
+ * /api/admin/usuarios:
  *   get:
  *     tags: [Admin]
  *     summary: Listar todos os usuários
@@ -58,9 +58,9 @@ router.post('/login', async (req: Request, res: Response) => {
  *     responses:
  *       200: { description: Lista de usuários (sem senha) }
  */
-router.get('/users', authenticate, requireAdmin, async (req: Request, res: Response) => {
+router.get('/usuarios', authenticate, requireAdmin, async (req: Request, res: Response) => {
   try {
-    const [users] = await pool.query<any[]>('SELECT id, nome, genero, data_nascimento, telefone, docPessoal, email, cep, logradouro, bairro, cidade, uf, complemento, numero, createdAt, ativo FROM users ORDER BY createdAt DESC')
+    const [users] = await pool.query<any[]>('SELECT id, nome, genero, data_nascimento, telefone, docPessoal, email, cep, logradouro, bairro, cidade, uf, complemento, numero, createdAt, ativo FROM usuarios ORDER BY createdAt DESC')
     res.json(users)
   } catch (err: any) {
     res.status(500).json({ error: err.message })
@@ -69,7 +69,7 @@ router.get('/users', authenticate, requireAdmin, async (req: Request, res: Respo
 
 /**
  * @openapi
- * /api/admin/users/{id}:
+ * /api/admin/usuarios/{id}:
  *   patch:
  *     tags: [Admin]
  *     summary: Atualizar dados de um usuário (admin)
@@ -88,7 +88,7 @@ router.get('/users', authenticate, requireAdmin, async (req: Request, res: Respo
  *     responses:
  *       200: { description: Usuário atualizado }
  */
-router.patch('/users/:id', authenticate, requireAdmin, async (req: Request, res: Response) => {
+router.patch('/usuarios/:id', authenticate, requireAdmin, async (req: Request, res: Response) => {
   try {
     const updates: string[] = []
     const params: any[] = []
@@ -103,7 +103,7 @@ router.patch('/users/:id', authenticate, requireAdmin, async (req: Request, res:
       return
     }
     params.push(req.params.id)
-    await pool.query(`UPDATE users SET ${updates.join(', ')} WHERE id = ?`, params)
+    await pool.query(`UPDATE usuarios SET ${updates.join(', ')} WHERE id = ?`, params)
     res.json({ message: 'Usuário atualizado' })
   } catch (err: any) {
     res.status(500).json({ error: err.message })
@@ -112,7 +112,7 @@ router.patch('/users/:id', authenticate, requireAdmin, async (req: Request, res:
 
 /**
  * @openapi
- * /api/admin/users/{id}/toggle-status:
+ * /api/admin/usuarios/{id}/toggle-status:
  *   patch:
  *     tags: [Admin]
  *     summary: Ativar/desativar conta de usuário
@@ -125,15 +125,15 @@ router.patch('/users/:id', authenticate, requireAdmin, async (req: Request, res:
  *     responses:
  *       200: { description: Status alterado }
  */
-router.patch('/users/:id/toggle-status', authenticate, requireAdmin, async (req: Request, res: Response) => {
+router.patch('/usuarios/:id/alternar-status', authenticate, requireAdmin, async (req: Request, res: Response) => {
   try {
-    const [users] = await pool.query<any[]>('SELECT ativo FROM users WHERE id = ?', [req.params.id])
+    const [users] = await pool.query<any[]>('SELECT ativo FROM usuarios WHERE id = ?', [req.params.id])
     if (users.length === 0) {
       res.status(404).json({ error: 'Usuário não encontrado' })
       return
     }
     const novoStatus = users[0].ativo ? false : true
-    await pool.query('UPDATE users SET ativo = ? WHERE id = ?', [novoStatus, req.params.id])
+    await pool.query('UPDATE usuarios SET ativo = ? WHERE id = ?', [novoStatus, req.params.id])
     res.json({ ativo: novoStatus, message: novoStatus ? 'Conta ativada' : 'Conta desativada' })
   } catch (err: any) {
     res.status(500).json({ error: err.message })
@@ -142,7 +142,7 @@ router.patch('/users/:id/toggle-status', authenticate, requireAdmin, async (req:
 
 /**
  * @openapi
- * /api/admin/report:
+ * /api/admin/relatorio:
  *   get:
  *     tags: [Admin]
  *     summary: Dados do relatório (agrupados por agência, serviço, status)
@@ -163,10 +163,10 @@ router.patch('/users/:id/toggle-status', authenticate, requireAdmin, async (req:
  *     responses:
  *       200: { description: Dados agregados do relatório }
  */
-router.get('/report', authenticate, requireAdmin, async (req: Request, res: Response) => {
+router.get('/relatorio', authenticate, requireAdmin, async (req: Request, res: Response) => {
   try {
     const { inicio, fim, agencia, servico } = req.query
-    let sql = 'SELECT * FROM appointments WHERE 1=1'
+    let sql = 'SELECT * FROM agendamentos WHERE 1=1'
     const params: any[] = []
 
     if (inicio) { sql += ' AND data >= ?'; params.push(inicio) }

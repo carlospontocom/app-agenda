@@ -41,7 +41,7 @@ router.post('/register', async (req: Request, res: Response) => {
   try {
     const { email, docPessoal } = req.body
 
-    const [existing] = await pool.query<any[]>('SELECT id, email FROM users WHERE email = ? OR docPessoal = ?', [email, docPessoal])
+    const [existing] = await pool.query<any[]>('SELECT id, email FROM usuarios WHERE email = ? OR docPessoal = ?', [email, docPessoal])
     if (existing.length > 0) {
       const field = existing[0].email === email ? 'Email' : 'Documento'
       res.status(409).json({ error: `${field} já cadastrado` })
@@ -50,7 +50,7 @@ router.post('/register', async (req: Request, res: Response) => {
 
     const { nome, genero, data_nascimento, telefone, senha, cep, logradouro, bairro, cidade, uf, complemento, numero } = req.body
     const [result] = await pool.query<any>(
-      `INSERT INTO users (nome, genero, data_nascimento, telefone, docPessoal, email, senha, cep, logradouro, bairro, cidade, uf, complemento, numero, ativo)
+      `INSERT INTO usuarios (nome, genero, data_nascimento, telefone, docPessoal, email, senha, cep, logradouro, bairro, cidade, uf, complemento, numero, ativo)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [nome, genero, data_nascimento, telefone, docPessoal, email, senha, cep, logradouro, bairro, cidade, uf, complemento, numero, true]
     )
@@ -83,7 +83,7 @@ router.post('/register', async (req: Request, res: Response) => {
 router.post('/login', async (req: Request, res: Response) => {
   try {
     const { email, senha } = req.body
-    const [users] = await pool.query<any[]>('SELECT * FROM users WHERE email = ? AND senha = ?', [email, senha])
+    const [users] = await pool.query<any[]>('SELECT * FROM usuarios WHERE email = ? AND senha = ?', [email, senha])
 
     if (users.length === 0) {
       res.status(401).json({ error: 'Email ou senha inválidos' })
@@ -128,7 +128,7 @@ router.post('/recover', async (req: Request, res: Response) => {
   try {
     const { docPessoal, data_nascimento, email } = req.body
     const [users] = await pool.query<any[]>(
-      'SELECT * FROM users WHERE docPessoal = ? AND data_nascimento = ? AND email = ?',
+      'SELECT * FROM usuarios WHERE docPessoal = ? AND data_nascimento = ? AND email = ?',
       [docPessoal, data_nascimento, email]
     )
 
@@ -188,7 +188,7 @@ router.post('/recover', async (req: Request, res: Response) => {
 router.post('/reset-password', async (req: Request, res: Response) => {
   try {
     const { userId, senha } = req.body
-    await pool.query('UPDATE users SET senha = ? WHERE id = ?', [senha, userId])
+    await pool.query('UPDATE usuarios SET senha = ? WHERE id = ?', [senha, userId])
     res.json({ message: 'Senha redefinida com sucesso' })
   } catch (err: any) {
     res.status(500).json({ error: err.message })
@@ -198,7 +198,7 @@ router.post('/reset-password', async (req: Request, res: Response) => {
 router.post('/update-password', authenticate, async (req: Request, res: Response) => {
   try {
     const { senha } = req.body
-    await pool.query('UPDATE users SET senha = ? WHERE id = ?', [senha, req.user!.userId])
+    await pool.query('UPDATE usuarios SET senha = ? WHERE id = ?', [senha, req.user!.userId])
     res.json({ message: 'Senha atualizada com sucesso' })
   } catch (err: any) {
     res.status(500).json({ error: err.message })

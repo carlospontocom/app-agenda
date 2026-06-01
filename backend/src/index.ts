@@ -62,7 +62,7 @@ app.get('/api/docs.json', (_req, res) => {
 
 // Routes
 app.use('/api/auth', authRoutes)
-app.use('/api/appointments', appointmentRoutes)
+app.use('/api/agendamentos', appointmentRoutes)
 app.use('/api/profile', profileRoutes)
 app.use('/api/admin', adminRoutes)
 

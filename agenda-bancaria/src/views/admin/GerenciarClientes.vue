@@ -69,7 +69,7 @@ onMounted(async () => {
 async function carregar() {
   loading.value = true
   try {
-    const { data } = await api.get<User[]>('admin/users')
+    const { data } = await api.get<User[]>('admin/usuarios')
     clientes.value = data
   } finally {
     loading.value = false
@@ -110,7 +110,7 @@ function fecharEdicao() {
 async function salvarEdicao() {
   if (!editandoId.value) return
   try {
-    await api.patch(`admin/users/${editandoId.value}`, {
+    await api.patch(`admin/usuarios/${editandoId.value}`, {
       nome: formEdicao.nome,
       genero: formEdicao.genero,
       data_nascimento: formEdicao.data_nascimento,
@@ -136,7 +136,7 @@ async function toggleAtivo(c: User) {
   const acao = c.ativo !== false ? 'desativar' : 'ativar'
   if (!confirm(`Tem certeza que deseja ${acao} este cliente?`)) return
   try {
-    await api.patch(`admin/users/${c.id}/toggle-status`)
+    await api.patch(`admin/usuarios/${c.id}/alternar-status`)
     await carregar()
   } catch (e: any) {
     toast.perigo('Erro ao alterar status: ' + e.message)
