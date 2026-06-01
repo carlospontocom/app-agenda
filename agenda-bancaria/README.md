@@ -66,7 +66,6 @@ agenda/
 │   │   ├── services/    # API e CEP
 │   │   ├── types/       # Interfaces e constantes
 │   │   └── styles/      # SCSS
-│   ├── db.json          # JSON Server (mock local)
 │   ├── vercel.json      # Config Vercel
 │   └── package.json
 ├── backend/             # API Express
@@ -82,12 +81,12 @@ agenda/
 ## Como Executar (local)
 
 ```bash
-# Frontend (com JSON Server mock)
+# Frontend
 cd agenda-bancaria
 npm install
-npm start          # JSON API em :3001 + Vite em :5173
+npm run dev         # Vite em :5173
 
-# Backend (com TiDB Cloud)
+# Backend (requer TiDB Cloud)
 cd backend
 npm install
 cp .env.example .env  # configurar credenciais
@@ -99,7 +98,7 @@ npm run dev            # API em :3000
 
 | Serviço | Plataforma | Link |
 |---------|-----------|------|
-| Frontend | Vercel | https://agenda-bancaria.vercel.app |
+| Frontend | Vercel | https://app-agenda-gamma.vercel.app |
 | Backend  | Render  | https://app-agenda-9ov0.onrender.com |
 
 ```bash
@@ -123,3 +122,17 @@ git push            # Render auto-deploy
 - Administrador pode editar dados e ativar/desativar contas
 - Usuário edita apenas telefone, email, endereço e senha
 - Contas inativas não realizam login nem recuperam senha
+
+## Screenshots
+
+| Página | Captura |
+|--------|---------|
+| Home | ![Home](public/screenshots/home.png) |
+| Login | ![Login](public/screenshots/login.png) |
+| Cadastro | ![Cadastro](public/screenshots/register.png) |
+| Recuperar Senha | ![Recuperar Senha](public/screenshots/forgot-password.png) |
+| Painel do Cliente | ![Painel](public/screenshots/dashboard.png) |
+| Agendar Serviço | ![Agendar](public/screenshots/schedule.png) |
+| Meus Agendamentos | ![Meus Agendamentos](public/screenshots/my-appointments.png) |
+| Painel Administrativo | ![Admin](public/screenshots/admin-dashboard.png) |
+| Gerenciar Clientes | ![Clientes](public/screenshots/gerenciar-clientes.png) |
