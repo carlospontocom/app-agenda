@@ -41,7 +41,7 @@ router.post('/register', async (req: Request, res: Response) => {
   try {
     const { email, docPessoal } = req.body
 
-    const [existing] = await pool.query<any[]>('SELECT id FROM users WHERE email = ? OR docPessoal = ?', [email, docPessoal])
+    const [existing] = await pool.query<any[]>('SELECT id, email FROM users WHERE email = ? OR docPessoal = ?', [email, docPessoal])
     if (existing.length > 0) {
       const field = existing[0].email === email ? 'Email' : 'Documento'
       res.status(409).json({ error: `${field} já cadastrado` })
