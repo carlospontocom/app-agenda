@@ -35,11 +35,32 @@ const form = reactive({
   confirmarSenha: ''
 })
 
+const CPF_REGEX = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/
+const CPF_DIGITS = /^\d{11}$/
+
+function isValidCPF(cpf: string): boolean {
+  const digits = cpf.replace(/\D/g, '')
+  if (!CPF_DIGITS.test(digits)) return false
+  if (/^(\d)\1+$/.test(digits)) return false
+
+  const calc = (mul: number) =>
+    digits
+      .slice(0, mul - 1)
+      .split('')
+      .reduce((s, d, i) => s + parseInt(d) * (mul - i), 0) * 10 % 11 % 10
+
+  return calc(10) === parseInt(digits[9]) && calc(11) === parseInt(digits[10])
+}
+
 async function verificarCadastro() {
   error.value = ''
   jaCadastrado.value = ''
   if (!form.docPessoal || !form.email) {
     error.value = 'Preencha documento e email'
+    return
+  }
+  if (!isValidCPF(form.docPessoal)) {
+    error.value = 'CPF inválido'
     return
   }
   step.value = 2
