@@ -129,10 +129,11 @@ git push            # Render auto-deploy
 |--------|---------|
 | Home | ![Home](public/screenshots/home.png) |
 | Login | ![Login](public/screenshots/login.png) |
-| Cadastro | ![Cadastro](public/screenshots/register.png) |
-| Recuperar Senha | ![Recuperar Senha](public/screenshots/forgot-password.png) |
-| Painel do Cliente | ![Painel](public/screenshots/dashboard.png) |
-| Agendar Serviço | ![Agendar](public/screenshots/schedule.png) |
-| Meus Agendamentos | ![Meus Agendamentos](public/screenshots/my-appointments.png) |
-| Painel Administrativo | ![Admin](public/screenshots/admin-dashboard.png) |
-| Gerenciar Clientes | ![Clientes](public/screenshots/gerenciar-clientes.png) |
+| Cadastro | ![Cadastro](public/screenshots/cadastro.png) |
+| Recuperar Senha | ![Recuperar Senha](public/screenshots/recuperar-senha.png) |
+| Painel do Cliente | ![Painel](public/screenshots/painel.png) |
+| Agendar Serviço | ![Agendar](public/screenshots/agendar.png) |
+| Meus Agendamentos | ![Meus Agendamentos](public/screenshots/meus-agendamentos.png) |
+| Perfil | ![Perfil](public/screenshots/perfil.png) |
+| Painel Administrativo | ![Admin](public/screenshots/admin-painel.png) |
+| Gerenciar Clientes | ![Clientes](public/screenshots/admin-clientes.png) |
