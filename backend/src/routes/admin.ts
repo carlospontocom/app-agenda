@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express'
 import { pool } from '../database'
 import { authenticate, requireAdmin, generateToken } from '../middleware/auth'
 import type { User } from '../types'
+import bcrypt from 'bcryptjs'
 
 const router = Router()
 
@@ -27,7 +28,7 @@ const router = Router()
 router.post('/login', async (req: Request, res: Response) => {
   try {
     const { email, senha } = req.body
-    const [users] = await pool.query<any[]>('SELECT * FROM usuarios WHERE email = ? AND senha = ?', [email, senha])
+    const [users] = await pool.query<any[]>('SELECT * FROM usuarios WHERE email = ?', [email])
 
     if (users.length === 0) {
       res.status(401).json({ error: 'Credenciais inválidas' })
@@ -35,6 +36,12 @@ router.post('/login', async (req: Request, res: Response) => {
     }
 
     const user = users[0] as User
+    const senhaValida = await bcrypt.compare(senha, user.senha)
+    if (!senhaValida) {
+      res.status(401).json({ error: 'Credenciais inválidas' })
+      return
+    }
+
     // Only the admin user can login as admin
     if (user.email !== 'admin@gmail.com') {
       res.status(403).json({ error: 'Acesso restrito' })

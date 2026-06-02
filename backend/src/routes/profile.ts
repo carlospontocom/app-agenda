@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express'
 import { pool } from '../database'
 import { authenticate } from '../middleware/auth'
+import bcrypt from 'bcryptjs'
 
 const router = Router()
 
@@ -53,7 +54,7 @@ router.patch('/', authenticate, async (req: Request, res: Response) => {
     for (const [key, value] of Object.entries(req.body)) {
       if (allowedFields.includes(key)) {
         updates.push(`${key} = ?`)
-        params.push(value)
+        params.push(key === 'senha' ? await bcrypt.hash(String(value), 10) : value)
       }
     }
 
@@ -64,7 +65,8 @@ router.patch('/', authenticate, async (req: Request, res: Response) => {
 
     params.push(req.user!.userId)
     await pool.query(`UPDATE usuarios SET ${updates.join(', ')} WHERE id = ?`, params)
-    res.json({ message: 'Perfil atualizado com sucesso' })
+    const [users] = await pool.query<any[]>('SELECT id, nome, genero, data_nascimento, telefone, docPessoal, email, cep, logradouro, bairro, cidade, uf, complemento, numero, createdAt, ativo FROM usuarios WHERE id = ?', [req.user!.userId])
+    res.json(users[0])
   } catch (err: any) {
     res.status(500).json({ error: err.message })
   }

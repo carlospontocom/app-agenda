@@ -89,10 +89,10 @@ export function generateTimeSlots(): string[] {
   const slots: string[] = []
   for (let h = 9; h < 15; h++) {
     for (let m = 0; m < 60; m += 20) {
-      slots.push(`${String(h).padStart(2, '0')}h${String(m).padStart(2, '0')}`)
+      slots.push(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`)
     }
   }
-  slots.push('14h40')
+  slots.push('14:40')
   return slots
 }
 

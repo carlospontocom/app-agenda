@@ -1,5 +1,6 @@
 import { pool } from './database'
 import dotenv from 'dotenv'
+import bcrypt from 'bcryptjs'
 
 dotenv.config()
 
@@ -69,11 +70,11 @@ async function migrate() {
     // Seed admin user if not exists
     const [rows] = await conn.query<any[]>('SELECT id FROM usuarios WHERE email = ?', ['admin@gmail.com'])
     if (rows.length === 0) {
-      // In production, store a bcrypt hash. For dev, plain text as per frontend.
+      const senhaHash = await bcrypt.hash('@123123', 10)
       await conn.query(
         `INSERT INTO usuarios (nome, genero, data_nascimento, telefone, docPessoal, email, senha, cep, logradouro, bairro, cidade, uf, complemento, numero, ativo)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        ['Administrador', 'Masculino', '1990-01-01', '11999999999', '00000000000', 'admin@gmail.com', '@123123', '01001000', 'Praça da Sé', 'Sé', 'São Paulo', 'SP', '', '1', true]
+        ['Administrador', 'Masculino', '1990-01-01', '11999999999', '00000000000', 'admin@gmail.com', senhaHash, '01001000', 'Praça da Sé', 'Sé', 'São Paulo', 'SP', '', '1', true]
       )
       console.log('✓ Usuário admin criado (admin@gmail.com / @123123)')
     }

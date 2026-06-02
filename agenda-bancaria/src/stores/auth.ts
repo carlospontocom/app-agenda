@@ -89,12 +89,6 @@ export const useAuthStore = defineStore('auth', () => {
 
   // Admin
   async function loginAdmin(email: string, senha: string): Promise<boolean> {
-    if (email === 'admin@gmail.com' && senha === '@123123') {
-      adminLogado.value = true
-      localStorage.setItem('agenda_admin', 'true')
-      return true
-    }
-    if (!email.endsWith('@banco.com')) return false
     try {
       const { data } = await api.post<{ token: string; user: User }>('admin/login', { email, senha })
       localStorage.setItem('agenda_token', data.token)

@@ -19,6 +19,7 @@ const porPagina = 5
 const editando = ref(false)
 const editandoId = ref<number | null>(null)
 const acoesAberto = ref<number | null>(null)
+const modalStatus = ref<{ show: boolean; message: string; ativo: boolean }>({ show: false, message: '', ativo: false })
 
 function onClickAcoes(e: MouseEvent) {
   const target = e.target as HTMLElement
@@ -88,7 +89,7 @@ function abrirEdicao(c: User) {
   editandoId.value = c.id ?? null
   formEdicao.nome = c.nome
   formEdicao.genero = c.genero
-  formEdicao.data_nascimento = c.data_nascimento
+  formEdicao.data_nascimento = formatDateInput(c.data_nascimento)
   formEdicao.telefone = maskTelefone(c.telefone)
   formEdicao.docPessoal = maskDoc(c.docPessoal)
   formEdicao.email = c.email
@@ -133,11 +134,12 @@ async function salvarEdicao() {
 }
 
 async function toggleAtivo(c: User) {
-  const acao = c.ativo !== false ? 'desativar' : 'ativar'
+  const acao = c.ativo ? 'desativar' : 'ativar'
   if (!confirm(`Tem certeza que deseja ${acao} este cliente?`)) return
   try {
-    await api.patch(`admin/usuarios/${c.id}/alternar-status`)
+    const { data } = await api.patch<{ ativo: boolean; message: string }>(`admin/usuarios/${c.id}/alternar-status`)
     await carregar()
+    modalStatus.value = { show: true, message: data.message, ativo: data.ativo }
   } catch (e: any) {
     toast.perigo('Erro ao alterar status: ' + e.message)
   }
@@ -156,6 +158,16 @@ function formatDate(d: string): string {
   const mm = String(dt.getMonth() + 1).padStart(2, '0')
   const yyyy = dt.getFullYear()
   return `${dd}/${mm}/${yyyy}`
+}
+
+function formatDateInput(d: string): string {
+  if (!d) return ''
+  const dt = new Date(d)
+  if (isNaN(dt.getTime())) return d
+  const dd = String(dt.getDate()).padStart(2, '0')
+  const mm = String(dt.getMonth() + 1).padStart(2, '0')
+  const yyyy = dt.getFullYear()
+  return `${yyyy}-${mm}-${dd}`
 }
 </script>
 
@@ -215,8 +227,8 @@ function formatDate(d: string): string {
             <td>{{ formatDate(c.data_nascimento) }}</td>
             <td>{{ c.cidade }}/{{ c.uf }}</td>
             <td>
-              <span class="etiqueta" :class="c.ativo !== false ? 'sucesso' : 'perigo'">
-                {{ c.ativo !== false ? 'Ativo' : 'Inativo' }}
+              <span class="etiqueta" :class="c.ativo ? 'sucesso' : 'perigo'">
+                {{ c.ativo ? 'Ativo' : 'Inativo' }}
               </span>
             </td>
             <td>
@@ -228,9 +240,9 @@ function formatDate(d: string): string {
                   <button class="item-acao" @click="abrirEdicao(c); acoesAberto = null">
                     <i class="fas fa-edit"></i> Editar
                   </button>
-                  <button class="item-acao" :class="c.ativo !== false ? 'perigo' : 'sucesso'" @click="toggleAtivo(c); acoesAberto = null">
-                    <i class="fas" :class="c.ativo !== false ? 'fa-ban' : 'fa-check'"></i>
-                    {{ c.ativo !== false ? 'Desativar' : 'Ativar' }}
+                  <button class="item-acao" :class="c.ativo ? 'perigo' : 'sucesso'" @click="toggleAtivo(c); acoesAberto = null">
+                    <i class="fas" :class="c.ativo ? 'fa-ban' : 'fa-check'"></i>
+                    {{ c.ativo ? 'Desativar' : 'Ativar' }}
                   </button>
                 </div>
               </div>
@@ -405,6 +417,16 @@ function formatDate(d: string): string {
         </div>
       </div>
     </div>
+    <!-- Modal de status -->
+    <div v-if="modalStatus.show" class="sobreposicao" @click.self="modalStatus.show = false">
+      <div class="cartao modal-status">
+        <div class="texto-centralizado">
+          <i class="fas" :class="modalStatus.ativo ? 'fa-check-circle' : 'fa-ban'" :style="{ fontSize: '3rem', color: modalStatus.ativo ? '#257942' : '#f14668' }"></i>
+          <h3 class="titulo tamanho-4 mt-3">{{ modalStatus.message }}</h3>
+          <button class="botao primario mt-4" @click="modalStatus.show = false">OK</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -468,5 +490,10 @@ function formatDate(d: string): string {
 }
 .item-acao.sucesso:hover {
   background: #effaf3;
+}
+.modal-status {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
 }
 </style>

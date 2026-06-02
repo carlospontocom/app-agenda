@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import api from '../services/api'
 import { buscarCep } from '../services/cep'
 import { formatDate } from '../types'
 import type { User } from '../types'
@@ -16,6 +17,25 @@ const cepStatus = ref<'ok' | 'error' | null>(null)
 
 const step = ref(1)
 const jaCadastrado = ref('')
+const steps = ['Verificar', 'Dados', 'Endereço', 'Senha', 'Revisão']
+
+const stepPreenchido = computed(() => (s: number): boolean => {
+  if (s === 1) return !!form.docPessoal && !!form.email
+  if (s === 2) return !!form.nome && !!form.genero && !!form.data_nascimento && !!form.telefone
+  if (s === 3) return !!form.cep && !!form.numero
+  if (s === 4) return !!form.senha
+  if (s === 5) return step.value === 5
+  return false
+})
+
+function irParaStep(s: number) {
+  if (s === step.value) return
+  if (s === 1) { step.value = 1; return }
+  if (s === 2 && stepPreenchido.value(1)) { step.value = 2; return }
+  if (s === 3 && stepPreenchido.value(2)) { step.value = 3; return }
+  if (s === 4 && stepPreenchido.value(3)) { step.value = 4; return }
+  if (s === 5 && stepPreenchido.value(4)) { step.value = 5; return }
+}
 
 const form = reactive({
   docPessoal: '',
@@ -35,12 +55,15 @@ const form = reactive({
   confirmarSenha: ''
 })
 
-const CPF_REGEX = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/
-const CPF_DIGITS = /^\d{11}$/
+const docTipo = computed(() => {
+  const d = form.docPessoal.replace(/\D/g, '')
+  if (d.length <= 11) return 'CPF'
+  return 'CNPJ'
+})
 
 function isValidCPF(cpf: string): boolean {
   const digits = cpf.replace(/\D/g, '')
-  if (!CPF_DIGITS.test(digits)) return false
+  if (!/^\d{11}$/.test(digits)) return false
   if (/^(\d)\1+$/.test(digits)) return false
 
   const calc = (mul: number) =>
@@ -52,6 +75,32 @@ function isValidCPF(cpf: string): boolean {
   return calc(10) === parseInt(digits[9]) && calc(11) === parseInt(digits[10])
 }
 
+function isValidCNPJ(cnpj: string): boolean {
+  const digits = cnpj.replace(/\D/g, '')
+  if (!/^\d{14}$/.test(digits)) return false
+  if (/^(\d)\1+$/.test(digits)) return false
+
+  const calc = (mul: number[]) =>
+    digits
+      .slice(0, mul.length)
+      .split('')
+      .reduce((s, d, i) => s + parseInt(d) * mul[i], 0) % 11
+
+  const r1 = calc([5,4,3,2,9,8,7,6,5,4,3,2])
+  const d1 = r1 < 2 ? 0 : 11 - r1
+  if (d1 !== parseInt(digits[12])) return false
+
+  const r2 = calc([6,5,4,3,2,9,8,7,6,5,4,3,2])
+  const d2 = r2 < 2 ? 0 : 11 - r2
+  return d2 === parseInt(digits[13])
+}
+
+function isDocValido(doc: string): boolean {
+  const d = doc.replace(/\D/g, '')
+  if (d.length <= 11) return isValidCPF(d)
+  return isValidCNPJ(d)
+}
+
 async function verificarCadastro() {
   error.value = ''
   jaCadastrado.value = ''
@@ -59,11 +108,27 @@ async function verificarCadastro() {
     error.value = 'Preencha documento e email'
     return
   }
-  if (!isValidCPF(form.docPessoal)) {
-    error.value = 'CPF inválido'
+  if (!isDocValido(form.docPessoal)) {
+    error.value = `${docTipo.value} inválido`
     return
   }
-  step.value = 2
+  try {
+    const { data } = await api.post<{ docPessoal: boolean; email: boolean }>('auth/check', {
+      docPessoal: form.docPessoal.replace(/\D/g, ''),
+      email: form.email
+    })
+    if (data.docPessoal && data.email) {
+      jaCadastrado.value = `${docTipo.value} e Email`
+    } else if (data.docPessoal) {
+      jaCadastrado.value = docTipo.value
+    } else if (data.email) {
+      jaCadastrado.value = 'Email'
+    } else {
+      step.value = 2
+    }
+  } catch {
+    step.value = 2
+  }
 }
 
 async function buscarEndereco() {
@@ -154,12 +219,12 @@ async function handleRegister() {
 
       <div class="cartao mb-4">
         <div class="etapas-registro">
-          <div v-for="s in 5" :key="s" class="etapa-item">
-            <span class="etiqueta" :class="step === s ? 'primaria' : step > s ? 'sucesso' : 'clara'" style="border-radius:50%;width:2rem;height:2rem;display:inline-flex;align-items:center;justify-content:center">
+          <div v-for="s in 5" :key="s" class="etapa-item" :class="{ clicavel: s <= step || stepPreenchido(s - 1) }" @click="irParaStep(s)">
+            <span class="etiqueta" :class="step === s ? 'primaria' : step > s ? 'sucesso' : 'clara'" style="border-radius:50%;width:2rem;height:2rem;display:inline-flex;align-items:center;justify-content:center;cursor:pointer">
               {{ step > s ? '✓' : s }}
             </span>
             <p class="texto-cinza etapa-rotulo">
-              {{ ['', 'Verificar', 'Dados', 'Endereço', 'Senha', 'Revisão'][s] }}
+              {{ steps[s - 1] }}
             </p>
           </div>
         </div>
@@ -175,13 +240,21 @@ async function handleRegister() {
 
         <div v-if="jaCadastrado" class="notificacao aviso mb-4">
           <p><strong>{{ jaCadastrado }} já cadastrado no sistema.</strong></p>
-          <p class="mt-2">Se você já possui cadastro, clique no botão abaixo para recuperar sua senha. Caso contrário, altere os dados acima e verifique novamente.</p>
+          <p class="mt-2">
+            <template v-if="jaCadastrado.includes('e Email')">Este {{ docTipo }} e Email já possuem cadastro.</template>
+            <template v-else-if="jaCadastrado === 'Email'">Este email já está cadastrado com outro documento.</template>
+            <template v-else>Este {{ docTipo }} já está cadastrado com outro email.</template>
+            Faça login ou recupere sua senha.
+          </p>
           <div class="grupo-botoes mt-3">
+            <router-link to="/entrar" class="botao primario">
+              <i class="fas fa-sign-in-alt mr-1"></i> Fazer Login
+            </router-link>
             <router-link to="/recuperar-senha" class="botao aviso">
               <i class="fas fa-key mr-1"></i> Recuperar Senha
             </router-link>
             <button class="botao" @click="jaCadastrado = ''">
-              <i class="fas fa-arrow-left mr-1"></i> Tentar outro dado
+              <i class="fas fa-arrow-left mr-1"></i> Alterar dados
             </button>
           </div>
         </div>
@@ -414,6 +487,9 @@ async function handleRegister() {
   flex: 1;
   text-align: center;
   max-width: 6rem;
+}
+.etapa-item.clicavel {
+  cursor: pointer;
 }
 
 .etapa-rotulo {
