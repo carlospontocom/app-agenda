@@ -58,7 +58,8 @@ async function handleLogin() {
 
         <div class="campo">
           <button class="botao primario largura-total" :class="{ carregando: loading }" type="submit">
-            <i class="fas fa-sign-in-alt mr-2"></i> Entrar
+            <template v-if="!loading"><i class="fas fa-sign-in-alt mr-2"></i> Entrar</template>
+            <template v-else><i class="fas fa-spinner fa-spin mr-2"></i> Processando...</template>
           </button>
         </div>
       </form>
