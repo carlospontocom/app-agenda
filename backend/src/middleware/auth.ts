@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
+import { pool } from '../database'
 import { JwtPayload } from '../types'
 
 const SECRET = process.env.JWT_SECRET || 'dev_secret_change_in_production'
@@ -12,7 +13,7 @@ declare global {
   }
 }
 
-export function authenticate(req: Request, res: Response, next: NextFunction): void {
+export async function authenticate(req: Request, res: Response, next: NextFunction): Promise<void> {
   const header = req.headers.authorization
   if (!header || !header.startsWith('Bearer ')) {
     res.status(401).json({ error: 'Token não fornecido' })
@@ -22,6 +23,11 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
   const token = header.split(' ')[1]
   try {
     const decoded = jwt.verify(token, SECRET) as JwtPayload
+    const [users] = await pool.query<any[]>('SELECT ativo FROM usuarios WHERE id = ?', [decoded.userId])
+    if (users.length === 0 || !users[0].ativo) {
+      res.status(403).json({ error: 'Conta desativada. Entre em contato com o administrador.' })
+      return
+    }
     req.user = decoded
     next()
   } catch {
