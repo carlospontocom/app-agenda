@@ -25,7 +25,7 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
     const decoded = jwt.verify(token, SECRET) as JwtPayload
     const [users] = await pool.query<any[]>('SELECT ativo FROM usuarios WHERE id = ?', [decoded.userId])
     if (users.length === 0 || !users[0].ativo) {
-      res.status(403).json({ error: 'Conta desativada. Entre em contato com o administrador.' })
+      res.status(403).json({ error: 'Sua conta está inativa. Procure a agência mais próxima para atualizar seu cadastro.' })
       return
     }
     req.user = decoded

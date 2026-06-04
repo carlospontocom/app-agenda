@@ -42,6 +42,11 @@ router.post('/login', async (req: Request, res: Response) => {
       return
     }
 
+    if (!user.ativo) {
+      res.status(401).json({ error: 'Sua conta está inativa. Procure a agência mais próxima para atualizar seu cadastro.' })
+      return
+    }
+
     // Only the admin user can login as admin
     if (user.email !== 'admin@gmail.com') {
       res.status(403).json({ error: 'Acesso restrito' })

@@ -176,8 +176,8 @@ router.post('/login', async (req: Request, res: Response) => {
       return
     }
 
-    if (user.ativo === false) {
-      res.status(401).json({ error: 'Sua conta está inativa. Entre em contato com o administrador.' })
+    if (!user.ativo) {
+      res.status(401).json({ error: 'Sua conta está inativa. Procure a agência mais próxima para atualizar seu cadastro.' })
       return
     }
 
@@ -223,8 +223,8 @@ router.post('/recover', async (req: Request, res: Response) => {
     }
 
     const user = users[0] as User
-    if (user.ativo === false) {
-      res.status(401).json({ error: 'Sua conta está inativa. Entre em contato com o administrador.' })
+    if (!user.ativo) {
+      res.status(401).json({ error: 'Sua conta está inativa. Procure a agência mais próxima para atualizar seu cadastro.' })
       return
     }
 
